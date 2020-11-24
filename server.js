@@ -1,26 +1,30 @@
-import express from 'express';
-import data from './data';
-import dotenv from 'dotenv';
-import config from './config';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import userRoute from './routes/userRoute';
-import productRoute from './routes/productRoute';
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
+//import bodyParser from 'body-parser';
+// const data = require('./data');
+
+const config = require('./config');
+const userRoute = require('./routes/userRoute');
+const productRoute = require('./routes/productRoute');
 
 dotenv.config();
 
 const mongodbUrl = config.MONGODB_URL;
-mongoose.connect(mongodbUrl, {
+console.log('mongodb cnx:', mongodbUrl);
+mongoose
+  .connect(mongodbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
-
-}).catch(error => console.log(error.reason));
+    useCreateIndex: true,
+  })
+  .then(() => console.log('connexion mongodb reussit...'))
+  .catch((error) => console.log(error.reason));
 
 const app = express();
-app.use(bodyParser.json());
-app.use("/api/users", userRoute);
+app.use(express.json());
+app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 
 // app.get("/api/products/:id", (req, res) => {
@@ -31,11 +35,12 @@ app.use('/api/products', productRoute);
 //     else
 //         res.status(404).send({ msg: "Product Not Found." })
 
-
 // });
 // app.get("/api/products", (req, res) => {
 //     console.log('ca marche')
 //     res.send(data.products);
 // });
 
-app.listen(5000, () => { console.log("server started at http://localhost:5000") })
+app.listen(5000, () => {
+  console.log('server started at http://localhost:5000');
+});

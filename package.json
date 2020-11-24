@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch backend --exec babel-node backend/server.js"
+    "start": "nodemon --exec babel-node server.js",
+    "debug": "ndb server"
   },
   "author": "",
   "license": "ISC",
